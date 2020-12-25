@@ -1,38 +1,64 @@
 import React, { useEffect, useState } from 'react'
 import './App.css';
+import Books from './Books';
 
 function App() {
-  const APP_KEY = 'nPAwglGw20GtTIU6EIQ2M707gVGYacFg'
 
   const [books, setBooks] = useState([])
+  const [search, setSearch] = useState("")
+  const [query, setQuery] = useState("the+alchemist")
 
   useEffect(() => {
+    const GetRequest = async () => {
+      const response = await fetch(
+       `https://www.googleapis.com/books/v1/volumes?q=${query}`
+      )
+      const data = await response.json()
+      setBooks(data.items)
+      console.log(data.items)
+    }
     GetRequest()
-  },[])
+  },[query])
 
-  const GetRequest = async () => {
-    const response = await fetch(
-     ` https://api.nytimes.com/svc/books/v3/reviews.json?title=Deacon+King+Kong&api-key=${APP_KEY}`
-
-    )
-    const data = await response.json()
-    setBooks(data.results)
-    console.log(data.results)
+  const getSearch = e => {
+    e.preventDefault()
+    //replace empty space in search with plus sign(http-Search)
+    search.replace(new RegExp(" ","g"),'+')
+    setQuery(search)
+    setSearch('')
   }
 
   return (
     <div className="App">
-      <h1>Books review App</h1>
-      {books.map(book => (
-        <>
-          <h1>{book.book_title}</h1>
-          <img src={`http://covers.openlibrary.org/b/isbn/${book.isbn13[0]}-M.jpg`} alt={book.book_title} />
-          <h3>{book.book_author}</h3>
-        </>
-        // console.log(book.isbn13[0])
-      ))}
+      <h1 className="app--title">Books review App</h1>
+      <form onSubmit={getSearch} className="search--form">
+        <input 
+          type="text" 
+          className="search--bar"
+          placeholder="Search Book..."
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+        />
+        <button className="search--btn" type="submit">
+          Search
+        </button>
+      </form>
+
+      <div className="content">
+        {books.slice(0,3).map(book => (
+          <Books key={book} 
+              title={book.volumeInfo.title}
+              publishedDate={book.volumeInfo.publishedDate}
+              averageRating={book.volumeInfo.averageRating}
+              imageLinks={book.volumeInfo.imageLinks['thumbnail']}
+              authors={book.volumeInfo.authors[0]}
+              categories={book.volumeInfo.categories}
+              description={book.volumeInfo.description} />    
+        ))}
+      </div>
+
     </div>
-  );
+  )
 }
 
 export default App;
