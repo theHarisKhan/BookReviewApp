@@ -17,6 +17,10 @@ body {
   margin: 10px auto;
 }
 
+.search--form {
+  margin-bottom: 16px;
+}
+
 .search--form .search--bar {
   width: 50%;
   height: 30px;
