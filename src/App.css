@@ -9,40 +9,78 @@ body {
 }
 
 .App {
+  width: 90%;
+  margin: 0 auto;
   text-align: center;
   color: white;
 }
 
 .app--title {
+  font-size: 3.6rem;
   margin: 10px auto;
+  letter-spacing: 4px;
 }
 
 .search--form {
   margin-bottom: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .search--form .search--bar {
   width: 50%;
-  height: 30px;
-  padding-left: 0.2rem;
+  height: 40px;
+  padding-left: 0.4rem;
+  background-color: rgb(228, 228, 228);
+  border: none;
+  border-radius: 50px;
+}
+
+.search--form .search--bar:active,
+.search--form .search--bar:focus {
+  border: 1px solid white;
+  border-radius: 50px;
 }
 
 .search--form .search--btn {
-  height: 30px;
-  background-color: rgb(0, 89, 255);
+  height: 40px;
+  width: 40px;
+  border-radius: 50px;
+  background-color: rgba(0, 89, 255, 0.911);
   color: white;
   border: none;
-  padding: 0.4rem;
+  padding: 0.5rem;
+  margin-left: -40px;
   transition: background-color 350ms ease;
   cursor: pointer;
 }
 
+.search--icon {
+  width: 100%;
+  filter: invert(1);
+  transition: transform 350ms ease;
+}
+
 .search--form .search--btn:hover,
 .search--form .search--btn:active {
-  background-color: rgb(0, 64, 184);
+  background-color: #00308a;
+}
+
+.search--form .search--btn:hover .search--icon {
+  transform: scale(1.1);
 }
 
 .content {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+@media (max-width: 425px) {
+  .App {
+    width: 95%;
+  }
+  .search--form .search--bar {
+    width: 85%;
+  }
 }

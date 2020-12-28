@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import './App.css';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 import Loader from 'react-loader-spinner'
+import SearchLogo from './loupe.svg'
 import Books from './Books';
 
 function App() {
@@ -10,6 +11,8 @@ function App() {
   const [search, setSearch] = useState("")
   const [query, setQuery] = useState("the+alchemist")
   const [loading, setLoading] = useState(false)
+  // for unique key
+  let id = 1
 
   useEffect(() => {
     const GetRequest = async () => {
@@ -22,7 +25,7 @@ function App() {
          setLoading(true)
          console.log(data.items)
       }catch(e){
-        alert("Book Not Found")
+        alert(`!!Something is Wrong Try another Book!! ${e}`)
       }
     }
     GetRequest()
@@ -31,14 +34,18 @@ function App() {
   const getSearch = e => {
     e.preventDefault()
     //replace empty space in search with plus sign(http-Search)
-    search.replace(new RegExp(" ","g"),'+')
-    setQuery(search)
-    setSearch('')
+    if (search !== ""){
+      search.replace(new RegExp(" ","g"),'+')
+      setQuery(search)
+      setSearch('')
+    } else {
+      alert("Enter Book Name")
+    }
   }
 
   return (
     <div className="App">
-      <h1 className="app--title">Books review App</h1>
+      <h1 className="app--title">Books review</h1>
       <form onSubmit={getSearch} className="search--form">
         <input 
           type="text" 
@@ -48,14 +55,14 @@ function App() {
           onChange={e => setSearch(e.target.value)}
         />
         <button className="search--btn" type="submit">
-          Search
+          <img src={SearchLogo} alt="icon" className="search--icon"/>
         </button>
       </form>
 
       <div className="content">
         {loading ? 
             books.slice(0,3).map(book => (
-              <Books key={book} 
+              <Books key={id++} 
                   title={book.volumeInfo.title}
                   publishedDate={book.volumeInfo.publishedDate}
                   averageRating={book.volumeInfo.averageRating}

@@ -34,12 +34,12 @@
 }
 
 .Books .summary {
+  text-align: center;
   margin: 20px 0;
   padding: 0.6rem 0;
   font-size: 17px;
   line-height: 1.6;
   border-top: 3px dotted rgb(226, 226, 226);
-  text-align: left;
 }
 
 .Books .summary span {
