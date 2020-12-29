@@ -43,6 +43,12 @@ function App() {
     }
   }
 
+  const CheckIt = (arg) => {
+    return(
+      arg ? arg : `Null`
+    )
+  }
+
   return (
     <div className="App">
       <h1 className="app--title">Books review</h1>
@@ -63,13 +69,13 @@ function App() {
         {loading ? 
             books.slice(0,3).map(book => (
               <Books key={id++} 
-                  title={book.volumeInfo.title}
-                  publishedDate={book.volumeInfo.publishedDate}
-                  averageRating={book.volumeInfo.averageRating}
-                  imageLinks={book.volumeInfo.imageLinks['thumbnail']}
-                  authors={book.volumeInfo.authors[0]}
-                  categories={book.volumeInfo.categories}
-                  description={book.volumeInfo.description} />    
+                  title={CheckIt(book.volumeInfo.title)}
+                  publishedDate={CheckIt(book.volumeInfo.publishedDate)}
+                  averageRating={CheckIt(book.volumeInfo.averageRating)}
+                  imageLinks={CheckIt(book.volumeInfo.imageLinks['thumbnail'])}
+                  authors={CheckIt(book.volumeInfo.authors[0])}
+                  categories={CheckIt(book.volumeInfo.categories)}
+                  description={CheckIt(book.volumeInfo.description)} />    
             ))  : 
         <Loader type="Puff" 
                 color="#00BFFF" 

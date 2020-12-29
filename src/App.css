@@ -31,6 +31,7 @@ body {
 .search--form .search--bar {
   width: 50%;
   height: 40px;
+  font-size: 1.3rem;
   padding-left: 0.4rem;
   background-color: rgb(228, 228, 228);
   border: none;
