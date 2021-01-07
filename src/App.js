@@ -15,20 +15,13 @@ function App() {
   let id = 1
 
   useEffect(() => {
-    const GetRequest = async () => {
-      try{
-        const response = await fetch(
-          `https://www.googleapis.com/books/v1/volumes?q=${query}`
-         )
-         const data = await response.json()
-         setBooks(data.items)
-         setLoading(true)
-         console.log(data.items)
-      }catch(e){
-        alert(`!!Something is Wrong Try another Book!! ${e}`)
-      }
-    }
-    GetRequest()
+    fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setBooks(data.items)
+        setLoading(true)
+        console.log(data.items)
+      })
   },[query])
 
   const getSearch = e => {
@@ -45,7 +38,7 @@ function App() {
 
   const CheckIt = (arg) => {
     return(
-      arg ? arg : `Null`
+      arg ? arg : null
     )
   }
 

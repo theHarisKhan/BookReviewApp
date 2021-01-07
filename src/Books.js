@@ -15,9 +15,9 @@ function Books({
             <h1>{title}<span>({publishedDate})</span></h1>
             <h3>by {authors}</h3>
             <img src={imageLinks} alt={title} loading="lazy"/>
-            <h2 className="rating">Average rating is '{averageRating}'</h2>
-            <h4 className="category">categories:- {categories}</h4>
-            <p className="summary"><span>Summary:-<br/></span> {description}</p>
+            <h2 className="rating">Average rating is '{averageRating === null ? 'Null' : averageRating}'</h2>
+            <h4 className="category">categories:- {categories === null ? 'Null' : categories}</h4>
+            <p className="summary"><span>Summary:-<br/></span> {description === null ? 'Not Available' : description}</p>
         </div>
     )
 }
