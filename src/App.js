@@ -1,26 +1,22 @@
-import React, { useEffect, useState } from 'react'
+import React,{ useEffect, useState } from 'react'
 import './App.css';
-import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
-import Loader from 'react-loader-spinner'
-import SearchLogo from './loupe.svg'
-import Books from './Books';
+
+const API_KEY = 'AIzaSyB4fSnOAUSUuKkzq8idjk--a6wVKgfMUSY'
 
 function App() {
-
   const [books, setBooks] = useState([])
   const [search, setSearch] = useState("")
-  const [query, setQuery] = useState("the+alchemist")
-  const [loading, setLoading] = useState(false)
-  // for unique key
-  let id = 1
+  const [query, setQuery] = useState('covid')
+  const [id, setId] =  useState('')
+  const [term, setTerm] = useState(false)
 
-  useEffect(() => {
-    fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setBooks(data.items)
-        setLoading(true)
-        console.log(data.items)
+
+  useEffect(()=>{
+    fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}&key=${API_KEY}`)
+      .then(response => response.json())
+      .then(result => {
+        setBooks(result.items)
+        console.log(books)
       })
   },[query])
 
@@ -36,15 +32,16 @@ function App() {
     }
   }
 
-  const CheckIt = (arg) => {
-    return(
-      arg ? arg : null
-    )
+  const CheckIt = (id) => {
+    setId(id)
+    console.log(id)
+    setTerm(true)
   }
 
   return (
     <div className="App">
-      <h1 className="app--title">Books review</h1>
+      <h1 className="title">Look Book</h1>
+
       <form onSubmit={getSearch} className="search--form">
         <input 
           type="text" 
@@ -54,33 +51,64 @@ function App() {
           onChange={e => setSearch(e.target.value)}
         />
         <button className="search--btn" type="submit">
-          <img src={SearchLogo} alt="icon" className="search--icon"/>
+          Search
         </button>
       </form>
 
-      <div className="content">
-        {loading ? 
-            books.slice(0,3).map(book => (
-              <Books key={id++} 
-                  title={CheckIt(book.volumeInfo.title)}
-                  publishedDate={CheckIt(book.volumeInfo.publishedDate)}
-                  averageRating={CheckIt(book.volumeInfo.averageRating)}
-                  imageLinks={CheckIt(book.volumeInfo.imageLinks['thumbnail'])}
-                  authors={CheckIt(book.volumeInfo.authors[0])}
-                  categories={CheckIt(book.volumeInfo.categories)}
-                  description={CheckIt(book.volumeInfo.description)} />    
-            ))  : 
-        <Loader type="Puff" 
-                color="#00BFFF" 
-                height={100} 
-                width={100} 
-                timeout={3000} />
-        }
-        
+      <div className="books">
+        {books.slice(0,3).map((book,key)=>(
+          <div key={key} className="book--item">
+            <img 
+              src={Object.values(book.volumeInfo.imageLinks)[0]} 
+              alt={book.volumeInfo.title} 
+              className="BookImg"
+            />
+            <div className="book--item-btns">
+              <a 
+                href={book.volumeInfo.previewLink} 
+                target='_blank'
+                rel="noreferrer"
+                className="preview--btn"
+              >
+                Preview
+              </a>
+
+              {book.accessInfo.pdf['acsTokenLink'] !== undefined ? (
+                <button 
+                  onClick={()=>CheckIt(book.id)}
+                  className="read--btn"
+                >
+                Read Online
+              </button>
+              ):(
+                <h3 className="null--point">Not Available</h3>
+              )}
+
+            </div>
+            
+            {(term && book.accessInfo.pdf['acsTokenLink'] !== undefined && id === book.id) ? (
+              <div className="reading--block">
+                <button 
+                  onClick={()=>setTerm(false)}
+                  className="close--btn"
+                >
+                X
+              </button>
+
+              {/* for online Book Reading */}
+                <iframe 
+                    title="Pdf Viewer"
+                    src={`https://books.google.com.pk/books?id=${id}&lpg=PP1&pg=PP1&output=embed`}
+                    className="iframe">
+                </iframe>
+              </div>
+            ) : ('')}            
+          </div>
+        ))}
       </div>
 
     </div>
-  )
+  );
 }
 
 export default App;
