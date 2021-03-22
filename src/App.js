@@ -6,7 +6,7 @@ const API_KEY = 'AIzaSyB4fSnOAUSUuKkzq8idjk--a6wVKgfMUSY'
 function App() {
   const [books, setBooks] = useState([])
   const [search, setSearch] = useState("")
-  const [query, setQuery] = useState('covid')
+  const [query, setQuery] = useState('hacking')
   const [id, setId] =  useState('')
   const [term, setTerm] = useState(false)
 
@@ -17,7 +17,7 @@ function App() {
       .then(result => {
         setBooks(result.items)
         console.log(books)
-      })
+      }).catch((error) => alert(error.message))
   },[query])
 
   const getSearch = e => {
@@ -34,7 +34,7 @@ function App() {
 
   const CheckIt = (id) => {
     setId(id)
-    console.log(id)
+    console.log("Book id: "+id)
     setTerm(true)
   }
 
@@ -51,7 +51,7 @@ function App() {
           onChange={e => setSearch(e.target.value)}
         />
         <button className="search--btn" type="submit">
-          Search
+          <img src="https://img.icons8.com/color/344/4a90e2/search--v1.png" alt=""/>
         </button>
       </form>
 
@@ -85,27 +85,28 @@ function App() {
               )}
 
             </div>
-            
-            {(term && book.accessInfo.pdf['acsTokenLink'] !== undefined && id === book.id) ? (
-              <div className="reading--block">
-                <button 
-                  onClick={()=>setTerm(false)}
-                  className="close--btn"
-                >
-                X
-              </button>
-
-              {/* for online Book Reading */}
-                <iframe 
-                    title="Pdf Viewer"
-                    src={`https://books.google.com.pk/books?id=${id}&lpg=PP1&pg=PP1&output=embed`}
-                    className="iframe">
-                </iframe>
-              </div>
-            ) : ('')}            
+                        
           </div>
         ))}
       </div>
+      {(term) ? (
+        <div className="reading--block">
+          <button 
+            onClick={()=>setTerm(false)}
+            className="close--btn"
+          >
+            X
+          </button>
+
+        {/* for online Book Reading */}
+          <iframe 
+              title="Pdf Viewer"
+              src={`https://books.google.com.pk/books?id=${id}&lpg=PP1&pg=PP1&output=embed`}
+              className="iframe">
+          </iframe>
+        </div>
+      ) : ('')}
+
 
     </div>
   );
