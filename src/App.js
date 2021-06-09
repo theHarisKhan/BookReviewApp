@@ -56,16 +56,16 @@ function App() {
       </form>
 
       <div className="books">
-        {books.slice(0,3).map((book,key)=>(
+        {books?.slice(0,3).map((book,key)=>(
           <div key={key} className="book--item">
             <img 
-              src={Object.values(book.volumeInfo.imageLinks)[0]} 
-              alt={book.volumeInfo.title} 
+              src={Object.values(book?.volumeInfo.imageLinks)[0]} 
+              alt={book?.volumeInfo.title} 
               className="BookImg"
             />
             <div className="book--item-btns">
               <a 
-                href={book.volumeInfo.previewLink} 
+                href={book?.volumeInfo.previewLink} 
                 target='_blank'
                 rel="noreferrer"
                 className="preview--btn"
@@ -73,9 +73,9 @@ function App() {
                 Preview
               </a>
 
-              {book.accessInfo.pdf['acsTokenLink'] !== undefined ? (
+              {book?.accessInfo.pdf['acsTokenLink'] !== undefined ? (
                 <button 
-                  onClick={()=>CheckIt(book.id)}
+                  onClick={()=>CheckIt(book?.id)}
                   className="read--btn"
                 >
                 Read Online
